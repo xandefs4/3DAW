@@ -5,7 +5,7 @@
         $b = $_POST["b"];
         $operacao = $_POST["operacao"];
 
-        // Verifica qual operação foi selecionada. A soma é o padrão (else).
+        // Verifica qual operação foi selecionada. A soma é o padrão.
         if ($operacao == 'subtracao') {
             $resultado = $a - $b;
         } elseif ($operacao == 'multiplicacao') {
