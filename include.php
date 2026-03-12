@@ -2,7 +2,6 @@
 
 // Incluir novo aluno
 
-
 $msg = "";
    
 if ($_SERVER['REQUEST_METHOD'] == 'POST')  {
