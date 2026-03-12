@@ -1,6 +1,6 @@
 <?php
 
-// Incluir aluno
+// Incluir novo aluno
 
 
 $msg = "";
