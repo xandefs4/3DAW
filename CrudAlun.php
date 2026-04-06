@@ -2,6 +2,30 @@
 
 // CRUD alunos
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $acao = $_POST["acao"];
+    $nome = isset($_POST["nome"]) ? $_POST["nome"] : "";
+    $matricula = $_POST["matricula"];
+    $email = isset($_POST["email"]) ? $_POST["email"] : "";
+
+    // Incluir
+    if ($acao == "incluir") {
+        if (!file_exists("alunos.txt")) {
+            $arqAlun = fopen("alunos.txt","w") or die("erro ao criar arquivo");
+            $linha = "nome;matricula;email\n";
+            fwrite($arqAlun,$linha);
+            fclose($arqAlun);
+        }
+        $arqAlun = fopen("alunos.txt","a") or die("erro ao abrir arquivo");
+        $linha = $nome . ";" . $matricula . ";" . $email . "\n";
+        fwrite($arqAlun,$linha);
+        fclose($arqAlun);
+        $msg = "Aluno incluído com sucesso!";
+    }
+
+    
+}
+
 ?>
 <!DOCTYPE html>
 <html>
