@@ -53,7 +53,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    
+    // Excluir
+    if ($acao == "excluir") {
+        if (!file_exists("alunos.txt")) {
+            $msg = "Arquivo de alunos não existe!";
+        } else {
+            $linhas = file("alunos.txt");
+            $arqAlun = fopen("alunos.txt","w") or die("erro ao abrir arquivo");
+            $achou = false;
+
+            foreach ($linhas as $linha) {
+                $dados = explode(";", $linha);
+                if ($dados[0] != "nome" && isset($dados[1]) && trim($dados[1]) == $matricula) {
+                    $achou = true;
+                } else {
+                    fwrite($arqAlun, $linha);
+                }
+            }
+
+            fclose($arqAlun);
+
+            if ($achou) {
+                $msg = "Aluno excluído com sucesso!";
+            } else {
+                $msg = "Matrícula não encontrada!";
+            }
+        }
+    }
 }
 
 ?>
