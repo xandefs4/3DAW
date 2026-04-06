@@ -23,6 +23,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msg = "Aluno incluído com sucesso!";
     }
 
+    // Alterar
+    if ($acao == "alterar") {
+        if (!file_exists("alunos.txt")) {
+            $msg = "Arquivo de alunos não existe!";
+        } else {
+            $linhas = file("alunos.txt");
+            $arqAlun = fopen("alunos.txt","w") or die("erro ao abrir arquivo");
+            $achou = false;
+
+            foreach ($linhas as $linha) {
+                $dados = explode(";", $linha);
+                if ($dados[0] != "nome" && isset($dados[1]) && trim($dados[1]) == $matricula) {
+                    $novaLinha = $nome . ";" . $matricula . ";" . $email . "\n";
+                    fwrite($arqAlun, $novaLinha);
+                    $achou = true;
+                } else {
+                    fwrite($arqAlun, $linha);
+                }
+            }
+
+            fclose($arqAlun);
+
+            if ($achou) {
+                $msg = "Aluno alterado com sucesso!";
+            } else {
+                $msg = "Matrícula não encontrada!";
+            }
+        }
+    }
+
     
 }
 
