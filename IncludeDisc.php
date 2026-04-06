@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $sigla = $_POST["sigla"];
     $nome = $_POST["nome"];
     $carga = $_POST["carga"];
-    echo "Sigla: " . $sigla . " Nome: " . $nome ; " Carga horária: " . $carga;
+    echo "Sigla: " . $sigla . " Nome: " . $nome . " Carga horária: " . $carga;
 
-    if (!file_exists(disciplinas.txt)){
+    if (!file_exists("disciplinas.txt")){
         $arqDisc = fopen("disciplinas.txt", "w") or die("Erro ao criar arquivo");
         $linha = "sigla;nome;carga\n";
         fwrite($arqDisc, $linha);
@@ -26,9 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 ?>
 
-<!DOCTYPE htmml>
-<htmml> 
+<!DOCTYPE html>
+<html> 
     <head> 
+    </head>
         <body> 
         <h1> Incluir nova disciplina</h1>
         <form action="IncludeDisciplina.php" method="POST">
@@ -41,5 +42,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </form>
         <p> <?php echo $msg ?></p>
         </body>
-    </head>
 </html>
