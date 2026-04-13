@@ -25,12 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             fclose($arqUsu);
         }
 
-        $arqUsu = fopen("usuarios.txt", "a") or die("erro ao abrir o arquivo");
-        $linha = "id;nome;senha\n";
-        fwrite($arqUsu, $linha);
-        fclose($arqUsu);
-        $msg = "";
-
+    $arqUsu = fopen("usuarios.txt", "a") or die("erro ao abrir o arquivo");
+    $linha = "id;nome;senha\n";
+    fwrite($arqUsu, $linha);
+    fclose($arqUsu);
+    $msg = "";
     }
 
     // Criar multipla escolha
@@ -40,15 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $linha = "id;pergunta;opces;opcao_correta\n";
             fwrite($arqMult,$linha);
         }
-        $arqMult = fopen("perguntas_multiplas.txt","a") or die("erro ao abrir arquivo");
-        $linha = $id_pergunta . ";" . $pergunta . ";" . $opcoes . ";" . $opcao_correta . "\n";
-        fwrite($arqMult,$linha);
-        fclose($arqMult);
-        $msg = "";
+ 
+    $arqMult = fopen("perguntas_multiplas.txt","a") or die("erro ao abrir arquivo");
+    $linha = $id_pergunta . ";" . $pergunta . ";" . $opcoes . ";" . $opcao_correta . "\n";
+    fwrite($arqMult,$linha);
+    fclose($arqMult);
+    $msg = "";
     }
     
-    // Criar discursivas
-    
+    // Criar discursias
+    if ($acao == "incluir_texto") {
+        if (!file_exists("perguntas_discursivas.txt")) {
+            $arqTexto = fopen("perguntas_discursivas.txt","w") or die("erro ao criar arquivo");
+            $linha = "id;pergunta;resposta\n";
+            fwrite($arqTexto,$linha);
+            fclose($arqTexto);
+        }
+    $arqTexto = fopen("perguntas_discursivas.txt","a") or die("erro ao abrir arquivo");
+    $linha = $id_pergunta . ";" . $pergunta . ";" . $resposta_texto . "\n";
+    fwrite($arqTexto,$linha);
+    fclose($arqTexto);
+    $msg = "";
+    }
     
     // Alterar multiplas
     
@@ -60,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     
     // Listar perguntas
-    
     
 }
 ?>
