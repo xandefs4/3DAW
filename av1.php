@@ -16,6 +16,7 @@
     6. Listar uma Pergunta.
     7. Excluir Pergunta e respostas*/
 
+$msg = ""; 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $acao = $_POST["acao"];
 
