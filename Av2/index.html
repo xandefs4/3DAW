@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vivant Beauty</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topo">
+    <a class="logo" href="#inicio">Vivant<span>beauty</span></a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+
+    <nav class="menu" id="menu">
+      <a href="#inicio">Início</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">Sobre</a>
+      <button class="link-btn" id="abrirAgendamento">Agendar</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <p class="tag">Salão de beleza e bem-estar</p>
+          <h1>Beleza natural com cuidado, leveza e carinho.</h1>
+          <p class="texto">
+            Um espaço pensado para desacelerar, relaxar e se reconectar com você mesma.
+          </p>
+          <div class="acoes">
+            <button class="btn principal" data-open-modal>Agendar agora</button>
+            <a class="btn secundario" href="#servicos">Ver serviços</a>
+          </div>
+        </div>
+
+        <aside class="info">
+          <h2>Informações</h2>
+          <p><strong>Telefone:</strong> (21) 4002-8922</p>
+          <p><strong>Horário:</strong> seg. 14h-20h · ter. a sáb. 9h-21h</p>
+          <p><strong>Endereço:</strong> Rua Clarimundo de Melo - Quintino Bocaiúva</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="secao" id="servicos">
+      <div class="container">
+        <div class="titulo-secao">
+          <p class="tag">Serviços</p>
+          <h2>Escolha seu cuidado</h2>
+        </div>
+
+        <div class="filtros" id="filtros">
+          <button class="ativo" data-categoria="todos">Todos</button>
+          <button data-categoria="Cabelo">Cabelo</button>
+          <button data-categoria="Maquiagem">Maquiagem</button>
+          <button data-categoria="Sobrancelhas">Sobrancelhas</button>
+          <button data-categoria="Massagem">Massagem</button>
+          <button data-categoria="Manicure">Manicure</button>
+        </div>
+
+        <div class="cards" id="listaServicos"></div>
+      </div>
+    </section>
+
+    <section class="secao sobre" id="sobre">
+      <div class="container sobre-grid">
+        <div>
+          <p class="tag">Sobre nós</p>
+          <h2>Mais do que beleza, uma experiência de cuidado.</h2>
+          <p>
+            O Vivant Beauty nasceu para transformar a rotina de beleza em um momento de bem-estar e autoestima.
+            Trabalhamos com atendimento acolhedor, profissionais capacitadas e um ambiente confortável.
+          </p>
+        </div>
+
+        <div class="quadro">
+          <h3>Nosso compromisso</h3>
+          <ul>
+            <li>Atendimento humanizado</li>
+            <li>Produtos de qualidade</li>
+            <li>Ambiente limpo e confortável</li>
+            <li>Experiências personalizadas</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Vivant Beauty © 2026</p>
+  </footer>
+
+  <div class="modal-fundo" id="modalFundo" hidden></div>
+
+  <section class="modal" id="modalAgendamento" hidden>
+    <button class="fechar" id="fecharModal" aria-label="Fechar">×</button>
+    <h2>Agendar horário</h2>
+    <p class="modal-texto">Nesta primeira versão, o formulário valida os campos. O salvamento no banco entra na segunda parte.</p>
+
+    <form id="formAgendamento">
+      <label>
+        Serviço *
+        <select id="servico" name="servico_id" required></select>
+      </label>
+
+      <label>
+        Nome *
+        <input type="text" name="nome" minlength="3" required>
+      </label>
+
+      <label>
+        Telefone *
+        <input type="tel" name="telefone" placeholder="(21) 99999-9999" required>
+      </label>
+
+      <label>
+        Email *
+        <input type="email" name="email" required>
+      </label>
+
+      <div class="linha-form">
+        <label>
+          Data *
+          <input type="date" name="data" required>
+        </label>
+
+        <label>
+          Horário *
+          <select name="hora" required>
+            <option value="">Selecione</option>
+            <option>09:00</option>
+            <option>10:00</option>
+            <option>11:00</option>
+            <option>14:00</option>
+            <option>15:00</option>
+            <option>16:00</option>
+            <option>18:00</option>
+            <option>19:00</option>
+          </select>
+        </label>
+      </div>
+
+      <button class="btn principal full" type="submit">Confirmar dados</button>
+      <p class="mensagem" id="mensagem"></p>
+    </form>
+  </section>
+</body>
+</html>
