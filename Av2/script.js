@@ -15,9 +15,13 @@ const servicosPadrao = [
   { id: 3, nome: 'Hidratação', categoria: 'Cabelo', duracao: '50min', preco: 80 },
   { id: 4, nome: 'Maquiagem social', categoria: 'Maquiagem', duracao: '1h', preco: 100 },
   { id: 5, nome: 'Maquiagem artística', categoria: 'Maquiagem', duracao: '1h30min', preco: 180 },
-  { id: 6, nome: 'Design de sobrancelhas', categoria: 'Sobrancelhas', duracao: '30min', preco: 40 },
-  { id: 7, nome: 'Massagem relaxante', categoria: 'Massagem', duracao: '1h', preco: 120 },
-  { id: 8, nome: 'Manicure tradicional', categoria: 'Manicure', duracao: '1h', preco: 30 }
+  { id: 6, nome: 'Maquiagem para noivas', categoria: 'Maquiagem', duracao: '1h30min', preco: 250 },
+  { id: 7, nome: 'Design de sobrancelhas', categoria: 'Sobrancelhas', duracao: '30min', preco: 40 },
+  { id: 8, nome: 'Alongamento de cílios', categoria: 'Sobrancelhas', duracao: '1h30min', preco: 120 },
+  { id: 9, nome: 'Massagem relaxante', categoria: 'Massagem', duracao: '1h', preco: 120 },
+  { id: 10, nome: 'Drenagem linfática', categoria: 'Massagem', duracao: '1h', preco: 130 },
+  { id: 11, nome: 'Manicure tradicional', categoria: 'Manicure', duracao: '1h', preco: 30 },
+  { id: 12, nome: 'Esmaltação em gel', categoria: 'Manicure', duracao: '1h', preco: 60 }
 ];
 
 iniciar();
@@ -53,7 +57,7 @@ function configurarEventos() {
     mostrarServicos();
   });
 
-  form.addEventListener('submit', validarAgendamento);
+  form.addEventListener('submit', salvarAgendamento);
 }
 
 async function carregarServicos() {
@@ -113,7 +117,7 @@ function fecharModal() {
   fundo.hidden = true;
 }
 
-function validarAgendamento(evento) {
+async function salvarAgendamento(evento) {
   evento.preventDefault();
 
   if (!form.checkValidity()) {
@@ -121,12 +125,40 @@ function validarAgendamento(evento) {
     return;
   }
 
-  mensagem.textContent = 'Dados validados. Na próxima etapa, o agendamento será salvo no banco.';
-  mensagem.classList.add('sucesso');
+  const dados = Object.fromEntries(new FormData(form));
+
+  try {
+    const resposta = await fetch('api/agendar.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+
+    const resultado = await resposta.json();
+    if (!resultado.sucesso) throw new Error(resultado.mensagem);
+
+    mensagem.textContent = 'Agendamento realizado com sucesso!';
+    mensagem.classList.add('sucesso');
+    form.reset();
+    definirDataMinima();
+    setTimeout(fecharModal, 1200);
+  } catch (erro) {
+    salvarLocalmente(dados);
+    mensagem.textContent = 'Agendamento salvo em modo demonstração.';
+    mensagem.classList.add('sucesso');
+    form.reset();
+    definirDataMinima();
+  }
 }
 
 function definirDataMinima() {
   const campoData = form.elements.data;
   const hoje = new Date().toISOString().split('T')[0];
   campoData.min = hoje;
+}
+
+function salvarLocalmente(dados) {
+  const agendamentos = JSON.parse(localStorage.getItem('agendamentos_vivant') || '[]');
+  agendamentos.push({ ...dados, criado_em: new Date().toISOString() });
+  localStorage.setItem('agendamentos_vivant', JSON.stringify(agendamentos));
 }
