@@ -11,13 +11,17 @@
   <header class="topo">
     <a class="logo" href="#inicio">Vivant<span>beauty</span></a>
 
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menu">☰</button>
 
     <nav class="menu" id="menu">
       <a href="#inicio">Início</a>
       <a href="#servicos">Serviços</a>
       <a href="#sobre">Sobre</a>
-      <button class="link-btn" id="abrirAgendamento">Agendar</button>
+      <button class="link-btn" id="abrirHistorico" type="button">Histórico</button>
+      <button class="link-btn" id="abrirLogin" type="button">Entrar</button>
+      <button class="btn-menu" id="abrirAgendamento" type="button">
+        Agendar (<span id="contadorCarrinho">0</span>)
+      </button>
     </nav>
   </header>
 
@@ -31,7 +35,7 @@
             Um espaço pensado para desacelerar, relaxar e se reconectar com você mesma.
           </p>
           <div class="acoes">
-            <button class="btn principal" data-open-modal>Agendar agora</button>
+            <button class="btn principal" type="button" data-open-modal>Agendar agora</button>
             <a class="btn secundario" href="#servicos">Ver serviços</a>
           </div>
         </div>
@@ -50,15 +54,16 @@
         <div class="titulo-secao">
           <p class="tag">Serviços</p>
           <h2>Escolha seu cuidado</h2>
+          <p>Você pode adicionar mais de um serviço ao carrinho.</p>
         </div>
 
         <div class="filtros" id="filtros">
-          <button class="ativo" data-categoria="todos">Todos</button>
-          <button data-categoria="Cabelo">Cabelo</button>
-          <button data-categoria="Maquiagem">Maquiagem</button>
-          <button data-categoria="Sobrancelhas">Sobrancelhas</button>
-          <button data-categoria="Massagem">Massagem</button>
-          <button data-categoria="Manicure">Manicure</button>
+          <button class="ativo" type="button" data-categoria="todos">Todos</button>
+          <button type="button" data-categoria="Cabelo">Cabelo</button>
+          <button type="button" data-categoria="Maquiagem">Maquiagem</button>
+          <button type="button" data-categoria="Sobrancelhas">Sobrancelhas</button>
+          <button type="button" data-categoria="Massagem">Massagem</button>
+          <button type="button" data-categoria="Manicure">Manicure</button>
         </div>
 
         <div class="cards" id="listaServicos"></div>
@@ -95,30 +100,29 @@
 
   <div class="modal-fundo" id="modalFundo" hidden></div>
 
-  <section class="modal" id="modalAgendamento" hidden>
-    <button class="fechar" id="fecharModal" aria-label="Fechar">×</button>
+  <section class="modal modal-grande" id="modalAgendamento" hidden>
+    <button class="fechar" type="button" data-fechar-modal aria-label="Fechar">×</button>
     <h2>Agendar horário</h2>
-    <p class="modal-texto">Preencha os dados abaixo. Campos com * são obrigatórios.</p>
+    <p class="modal-texto" id="statusAgendamento">Revise o carrinho e complete o agendamento.</p>
+
+    <div class="carrinho-box">
+      <div class="carrinho-titulo">
+        <h3>Serviços escolhidos</h3>
+        <a href="#servicos" id="continuarEscolhendo">Adicionar mais</a>
+      </div>
+      <div id="itensCarrinho"></div>
+      <div class="total-carrinho">
+        <span>Total</span>
+        <strong id="totalCarrinho">R$ 0,00</strong>
+      </div>
+    </div>
 
     <form id="formAgendamento">
       <label>
-        Serviço *
-        <select id="servico" name="servico_id" required></select>
-      </label>
-
-      <label>
-        Nome *
-        <input type="text" name="nome" minlength="3" required>
-      </label>
-
-      <label>
-        Telefone *
-        <input type="tel" name="telefone" placeholder="(21) 99999-9999" required>
-      </label>
-
-      <label>
-        Email *
-        <input type="email" name="email" required>
+        Profissional
+        <select id="profissional" name="profissional_id">
+          <option value="">Sem preferência</option>
+        </select>
       </label>
 
       <div class="linha-form">
@@ -131,21 +135,75 @@
           Horário *
           <select name="hora" required>
             <option value="">Selecione</option>
-            <option>09:00</option>
-            <option>10:00</option>
-            <option>11:00</option>
-            <option>14:00</option>
-            <option>15:00</option>
-            <option>16:00</option>
-            <option>18:00</option>
-            <option>19:00</option>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="18:00">18:00</option>
+            <option value="19:00">19:00</option>
           </select>
         </label>
       </div>
 
-      <button class="btn principal full" type="submit">Confirmar agendamento</button>
+      <fieldset class="pagamento">
+        <legend>Forma de pagamento *</legend>
+        <label><input type="radio" name="forma_pagamento" value="credito" required> Cartão de crédito</label>
+        <label><input type="radio" name="forma_pagamento" value="debito"> Cartão de débito</label>
+        <label><input type="radio" name="forma_pagamento" value="pix"> Pix</label>
+        <label><input type="radio" name="forma_pagamento" value="dinheiro"> Dinheiro</label>
+      </fieldset>
+
+      <button class="btn principal full" id="confirmarAgendamento" type="submit">Confirmar agendamento</button>
+      <p class="aviso-login" id="avisoLoginAgendamento">É necessário entrar para confirmar.</p>
       <p class="mensagem" id="mensagem"></p>
     </form>
+  </section>
+
+  <section class="modal" id="modalLogin" hidden>
+    <button class="fechar" type="button" data-fechar-modal aria-label="Fechar">×</button>
+    <h2>Área do cliente</h2>
+
+    <div id="areaDeslogada">
+      <div class="abas">
+        <button class="aba ativa" type="button" data-aba="login">Entrar</button>
+        <button class="aba" type="button" data-aba="cadastro">Criar conta</button>
+      </div>
+
+      <div id="painelLogin">
+        <form id="formLogin">
+          <label>E-mail *<input type="email" name="email" required></label>
+          <label>Senha *<input type="password" name="senha" required></label>
+          <button class="btn principal full" type="submit">Entrar</button>
+          <p class="mensagem" id="mensagemLogin"></p>
+        </form>
+      </div>
+
+      <div id="painelCadastro" hidden>
+        <form id="formCadastro">
+          <label>Nome completo *<input type="text" name="nome" minlength="3" required></label>
+          <label>Telefone *<input type="tel" name="telefone" placeholder="(21) 99999-9999" required></label>
+          <label>E-mail *<input type="email" name="email" required></label>
+          <label>Senha *<input type="password" name="senha" minlength="6" required></label>
+          <button class="btn principal full" type="submit">Criar conta</button>
+          <p class="mensagem" id="mensagemCadastro"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="area-logada" id="areaLogada" hidden>
+      <h3 id="nomeUsuario"></h3>
+      <p id="emailUsuario"></p>
+      <button class="btn contorno full" id="sairConta" type="button">Sair da conta</button>
+    </div>
+  </section>
+
+  <section class="modal modal-grande" id="modalHistorico" hidden>
+    <button class="fechar" type="button" data-fechar-modal aria-label="Fechar">×</button>
+    <h2>Histórico de agendamentos</h2>
+    <div id="listaHistorico"></div>
+    <p class="mensagem" id="mensagemHistorico"></p>
   </section>
 </body>
 </html>
